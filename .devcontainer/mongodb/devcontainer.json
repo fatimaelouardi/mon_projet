@@ -1,0 +1,16 @@
+{
+    "name" : "Montee - MongoDB",
+    "service" : "mongodb",
+    "dockerComposeFile" : "../../docker-compose.yaml",
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+             
+            ],
+            "settings": {
+             
+            }
+        }
+    }
+}

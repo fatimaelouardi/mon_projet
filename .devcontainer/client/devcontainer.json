@@ -1,0 +1,36 @@
+{
+    "name" : "Montee - Client",
+    "service" : "client",
+    "dockerComposeFile" : "../../docker-compose.yaml",
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "christian-kohler.npm-intellisense",
+                "VisualStudioExptTeam.vscodeintellicode",
+                "biomejs.biome",
+                "dsznajder.es7-react-js-snippets"
+            ],
+            "settings": {
+                "[javascript]": {
+                    "editor.formatOneSave": true,
+                    "editor.formatOneType": true,
+                    "editor.defaultFormatter": "biomejs.biome",
+                },
+                "[javascriptreact]": {
+                    "editor.formatOneSave": true,
+                    "editor.formatOneType": true,
+                    "editor.defaultFormatter": "biomejs.biome",
+                },
+                "[javascriptreact]": {
+                    "editor.formatOneSave": true,
+                    "editor.formatOneType": true,
+                    "editor.defaultFormatter": "biomejs.biome",
+                },
+                "editor.codeActionsOnSave": {
+                    "source.fixAll": "always"
+                }
+            }
+        }
+    }
+}

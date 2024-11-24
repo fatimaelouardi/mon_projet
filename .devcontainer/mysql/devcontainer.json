@@ -1,0 +1,16 @@
+{
+    "name" : "Montee - MySQL",
+    "service" : "mysql",
+    "dockerComposeFile" : "../../docker-compose.yaml",
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+             
+            ],
+            "settings": {
+             
+            }
+        }
+    }
+}

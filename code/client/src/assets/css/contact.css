@@ -1,0 +1,199 @@
+.mainContact {
+    padding-top: 9%; 
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6vh;
+}
+
+.contact-us {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5vw;
+    margin-bottom: 6vh;
+}
+
+
+
+aside {
+    width: 25vw;
+    background: var(--pur-white);
+    padding: 4%;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    border-radius: 32px;
+    box-shadow: var(--form-shadow);
+}
+
+aside article {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+.contact-us h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; 
+    color: var(--black);
+}
+
+.contact-us h3 i {
+    font-size: 1rem; 
+    color: var(--white);
+    background: var(--primary-blue);
+    border-radius: 50%;
+    padding: .7rem;
+}
+
+.contact-us p {
+    text-align: left;
+}
+
+
+
+.contact-form {
+    background: var(--pur-white);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    border-radius: 32px;
+    box-shadow: var(--form-shadow);
+    width: 60vw;
+}
+
+
+.coordonnees {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+ label {
+ font-weight: bold;
+ color: var(--black);
+}
+
+.coordonnees input {
+    width: 18vw;
+    padding: 0.8rem;
+    border-radius: 32px;
+    border: 1px solid var(--grey);
+}
+
+textarea {
+    width: 100%;
+    height: 30vh;
+    padding: 1rem;
+    border-radius: 32px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+
+.btn {
+    align-self: flex-end;
+    background: var(--primary-blue);
+    color: var(--white);
+    font-weight: bold;
+    border: none;
+    width: 15vw;
+    height: 6vh;
+    cursor: pointer;
+    border-radius: 32px;
+}
+
+.btn:hover {
+    background: #000;
+    color: var(--white);
+    transition: var(--trans-text);
+}
+
+
+/* responsive  */
+
+
+@media screen and (max-width: 768px) {
+    .contact-us {
+        flex-direction: column;
+        gap: 3vw;
+    }
+
+    aside {
+        width: 100%;
+        order: 2;
+        padding: 3%
+        
+
+    }
+
+    .contact-form {
+        width: 100%;
+    }
+
+    .coordonnees {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .coordonnees input {
+        width: 90vw; 
+    }
+
+    .btn {
+        width: 50vw;
+        height: 9vh;
+        text-align: center;
+        align-self: center;
+    }
+}
+
+@media screen and  (max-width: 480px) {
+    .contact-us {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    aside {
+        width: 100%;
+        order: 2;
+        padding: 3%;
+    }
+
+    .contact-form {
+        width: 100%;
+    }
+
+    .coordonnees {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .coordonnees input {
+        width: 100vw; 
+    }
+
+    .btn {
+        width: 80vw;
+        align-self: center;
+        height: 5vh;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+    }
+
+    textarea {
+        height: 20vh;
+        
+    }
+}

@@ -1,0 +1,8 @@
+code/server/nodemodules
+mysql-db
+mongodb-db
+code/server/tests/_coverage
+code/server/dist
+cleSsh.pub
+ssh.pub
+ssh

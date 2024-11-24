@@ -1,0 +1,19 @@
+{
+    "name" : "Montee - Server",
+    "service" : "server",
+    "dockerComposeFile" : "../../docker-compose.yaml",
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "christian-kohler.npm-intellisense",
+                "VisualStudioExptTeam.vscodeintellicode",
+                "biomejs.biome",
+                "dsznajder.es7-react-js-snippets"
+            ],
+            "settings": {
+                
+            }
+        }
+    }
+}

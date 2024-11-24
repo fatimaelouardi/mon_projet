@@ -1,0 +1,121 @@
+
+/* header */
+
+header {
+    position: fixed;
+    width: 100vw;
+    max-width: 100%;
+    background: var(--l-black);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 10vh;
+    padding: 0 2vw;
+    z-index: 100;
+    
+  }
+  
+  header a, i {
+    color: var(--white);
+  }
+  
+  header a:hover, i:hover {
+    color: var(--primary-blue);
+    transition: var(--trans-text);
+  }
+  
+  header .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+  }
+  
+  header .nav-links a {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+  
+  header .header-icons {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+  }
+  
+  header .header-icons i {
+    font-size: 1.5rem;
+  }
+  
+  #menu-icon, #close-icon {
+    display: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+  
+  /* Responsive pour tablette et mobile */
+  
+  @media screen and (max-width: 1024px) {
+    #navbar {
+        display: none;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.9);
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding-top: 50px;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+  
+    .nav-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+  
+    .nav-links a {
+        font-size: 1.8rem; 
+        color: var(--white);
+    }
+  
+    #menu-icon {
+        display: block;
+        z-index: 101; 
+    }
+  
+    #close-icon {
+        display: none;
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        z-index: 102; 
+    }
+  
+    .menu-active #navbar {
+        display: flex;
+    }
+  
+    .menu-active #menu-icon {
+        display: none;
+    }
+  
+    .menu-active #close-icon {
+        display: block;
+    }
+  
+    .menu-active .header-icons {
+        display: none;
+    }
+  
+    .menu-active .nav-links {
+        justify-content: center;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    header .nav-links a {
+        font-size: 1.5rem; 
+    }
+  }
+  

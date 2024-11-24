@@ -1,0 +1,166 @@
+
+/* footer */
+footer {
+    padding-top: 20vh;
+  }
+  .footer {
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .footer-nav {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8vw;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 3vh 10vw;
+    border-bottom: 1px solid var(--grey);
+  }
+  
+  .footer-nav li {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    margin: 0 1vw;
+  }
+  
+  .footer .liens {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+  }
+  
+  .footer .liens a {
+    color: var(--black);
+  }
+  
+  .footer-nav .info {
+    max-width: 20rem;
+  }
+  
+  .footer-nav .info {
+    text-align: left;
+  }
+  
+  
+  .info .info-p{
+    text-align: left;
+  }
+  
+  .copyright {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3vh 10vw;
+  }
+  .socialmedis-icons {
+    display: flex;
+    align-items: center;
+    
+  }
+  .socialmedis-icons i {
+    color: black;
+    font-size: 1.2rem;
+  }
+  
+  
+  @media screen and (max-width: 1024px) {
+  
+      
+    .footer-nav {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding:  2vh 0;
+    }
+  
+    .footer-nav li {
+        text-align: center;
+        width: 100%;
+        gap: 1vh;
+        
+    }
+  
+    .footer-nav .liens {
+        padding: 1vh 0;
+    }
+  
+    .footer-nav li h3 {
+        font-size: 1.5rem;
+    }
+  
+    .footer-nav .liens a {
+        color: var(--black);
+        font-size: 1.4rem;
+        margin-top: 1rem;
+    }
+  
+  
+  
+    .footer-nav .info {
+        width: 100%;
+    }
+  
+    .footer-nav .info p, figure{
+        text-align: center;
+    }
+  
+    .footer-nav .info p{
+        font-size: 1.5rem;
+  
+    }
+    .socialmedis-icons {
+        justify-content: center;
+    }
+  
+    .copyright {
+        flex-direction: column;
+        align-items: center;
+        padding: 2vh 0;
+    }
+    .copyright figure {
+        padding-top: 2vh;
+        text-align: center;
+    }
+  
+  }
+  
+  @media screen and (max-width: 480px) {
+    .footer-nav {
+        padding: 2vh 2vw;
+    }
+  
+    .footer-nav li h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1vh;
+    }
+  
+    .footer-nav li {
+        gap: 1vh;
+        margin-top: 2vh;
+    }
+  
+    .socialmedis-icons i {
+        font-size: 0.9rem;
+        padding: 0.4rem;
+    }
+  
+    .copyright {
+        padding: 1vh 2vw;
+    }
+  
+    .copyright p {
+        font-size: 0.8rem;
+        margin-bottom: 1vh;
+        text-align: center;
+  
+  
+    }
+  }
