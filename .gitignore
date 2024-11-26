@@ -4,5 +4,3 @@ mongodb-db
 code/server/__tests__/__coverage__
 code/server/dist
 cleSsh.pub
-ssh.pub
-ssh
