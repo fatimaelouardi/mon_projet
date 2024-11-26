@@ -7,6 +7,7 @@ const Header = () => {
 
     
     const { user, setUser } = useContext(UserContext);
+    // console.log(user);
 
     
     return (
@@ -25,6 +26,14 @@ const Header = () => {
     
     <nav id="navbar">
         <ul class="nav-links">
+         
+            
+
+            {
+                 user?.id_role === 1 ? (
+                    <Link to= {"/admin"}>Administration</Link>
+                ) : (<></>)
+            }
             
             <Link><a href="perso.html">Design Unique</a></Link>
 
@@ -36,9 +45,11 @@ const Header = () => {
 
 
             }
+
+           
            
             <Link ><a href="contact.html"></a>{user?.nom}</Link>
-            <Link ><p>{JSON.stringify(user)}</p></Link>
+            {/* <Link ><p>{JSON.stringify(user)}</p></Link> */}
             
         </ul>
     </nav>

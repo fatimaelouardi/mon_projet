@@ -4,6 +4,7 @@ import ProduitRouter from "../router/produit_router.js";  // Le routeur des prod
 import SecurityRouter from "../router/security_router.js";  // Routeur pour gérer la sécurité
 import cors from "cors";  // Middleware CORS pour gérer les accès
 import OriginMiddleware from "../middleware/security/origin_middleware.js";
+import TailleRouter from "../router/taille_router.js";
 
 class Server {
     private app: Express = express();  // Application Express
@@ -38,6 +39,7 @@ class Server {
     private listRouters = (): void => {
         // Routeur pour gérer les produits
         this.router.use("/produit", new ProduitRouter().getRouter());
+        this.router.use("/taille", new TailleRouter().getRouter());
 
         // Routeur pour gérer la sécurité (authentification, autorisation)
         this.router.use("/", new SecurityRouter().getRouter());

@@ -5,7 +5,13 @@ import ContactPage from "../pages/ContactPage";
 // import Register from "../pages/Register";
 // import Login from "../pages/Login"
 // import LogoutPage from "../pages/LogoutPage";
-import ConnexionPage from "../pages/ConnecxionPage";
+// import ConnexionPage from "../pages/ConnecxionPage";
+import AdminHomePage from "../pages/admin/AdminHomePage";
+import AdminProduitPage from "../pages/admin/AdminProduitPage";
+import AdminProduitFormPage from "../pages/admin/AdminProduitFormPage";
+import Register from "../pages/Register";
+import Login from "../pages/Login";
+
 
 const router = createBrowserRouter([
     {
@@ -23,10 +29,34 @@ const router = createBrowserRouter([
 
             {
                 path: 'register',  
-                element: <ConnexionPage/>
+                element: <Register/>
+            },
+            {
+                path: 'login',  
+                element: <Login/>
+            },
+            {
+                path: '/admin/',
+                children: [
+                    {
+                        path: '',
+                        element: <AdminHomePage/>
+                    },
+                    {
+                        path: 'produit',
+                        element: <AdminProduitPage/>
+                    },
+        
+                    {
+                        path: 'produit/form',  
+                        element: <AdminProduitFormPage/>
+                    }
+                ]
             }
         ]
-    }
+
+    },
+   
 ])
 
 export default router;

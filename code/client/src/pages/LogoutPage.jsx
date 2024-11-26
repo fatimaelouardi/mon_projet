@@ -1,36 +1,36 @@
-// import { useContext, useEffect } from "react";
-// import {UserContext} from "../provider/User_provider";
-// import { useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import {UserContext} from "../provider/User_provider";
+import { useNavigate } from "react-router-dom";
 
 
 
-// const LogoutPage = () => {
+const LogoutPage = () => {
 
-//     // Accéder à l'utilisateur stocké dbas le contexte 
+    // Accéder à l'utilisateur stocké dbas le contexte 
 
-//     const {user, setUser} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
 
-//     // useNaviagte : redirection
-
-
-//     const navigate = useNavigate();
+    // useNaviagte : redirection
 
 
-//     // ecécuter des instructions à l'affichage du composant 
-//     useEffect(() => {
-//     //   supprimer l'utilisateur du contexte 
-//     setUser(null);
-
-//     // redirection
-//     navigate("/");
+    const navigate = useNavigate();
 
 
-//     }, [setUser, navigate]);
+    // ecécuter des instructions à l'affichage du composant 
+    useEffect(() => {
+    //   supprimer l'utilisateur du contexte 
+    setUser(null);
 
-//     return <></>;
+    // redirection
+    navigate("/");
+
+
+    }, [setUser, navigate]);
+
+    return <></>;
     
 
-// };
+};
 
 
-// export default LogoutPage;
+export default LogoutPage;

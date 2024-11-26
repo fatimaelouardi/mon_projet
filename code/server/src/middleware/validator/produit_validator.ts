@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
-import ProduitValidator from "../../validator/produit_validator.js"; // Le validateur que vous allez créer pour le produit
 import type Joi from "joi";
 import type { ValidationError } from "joi";
+import ProduitValidator from "../../validator/produit_validator.js";
 
 class ProduitValidatorMiddleware {
     // Méthode pour valider les données du produit

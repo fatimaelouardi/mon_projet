@@ -86,7 +86,6 @@ CREATE TABLE Produit_Taille (
     id_taille INT NOT NULL,
     PRIMARY KEY (id_produit, id_taille),
     FOREIGN KEY (id_produit) REFERENCES Produit(id_produit) ON DELETE CASCADE
-    -- Vous pouvez créer une table "Taille" séparée si nécessaire.
 );
 
 -- Table de jointure Produit_Couleur (facultative, pour les couleurs)
@@ -95,5 +94,11 @@ CREATE TABLE Produit_Couleur (
     id_couleur INT NOT NULL,
     PRIMARY KEY (id_produit, id_couleur),
     FOREIGN KEY (id_produit) REFERENCES Produit(id_produit) ON DELETE CASCADE
-    -- Vous pouvez créer une table "Couleur" séparée si nécessaire.
 );
+
+CREATE TABLE Role (
+    id_role INT NOT   AUTO_INCREMENT,
+    name VARCHAR(50) NOT NUMM UNIQUE 
+);
+
+
