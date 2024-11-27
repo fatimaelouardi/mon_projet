@@ -1,0 +1,56 @@
+# nom du workflow
+name: Montee CI/CO
+
+# déclenchement du workflow à la main
+on: workflow_dispatch
+
+# taches a executé
+jobs:
+  # nom de la tache
+  CI: 
+    # exécuteur
+    runs-on: ubuntu-latest
+
+    steps:
+    -  
+      name: Récupérer le dépôt github
+
+      # exécuter une action prédéfinie cette uses va cloner le dépot
+      uses: actions/checkout@v4
+    
+    -
+      name: Installer les dépendances de Node
+
+      # exécuter une commande personnelle: run
+      run: |
+        cd code/server
+        npm ci 
+    
+    -
+      name: Compiler TypeScript en javaScipt
+
+      # exécuter une commande personnelle: run
+      run: |
+        cd code/server
+        rm -rf dist
+        npm run compile
+    
+    -
+      name: Installer la base un serveur MySQL
+
+       # exécuter une commande personnelle: run
+       # service mysql start: demarrer le serveur mysql
+      run: |
+        sudo service mysql start
+        cd code/server/mysql
+        mysql -uroot -proot -e 'source montee.test.sql;'
+        mysql -uroot -proot -e 'SHOW DATABASES;'
+        mysql -uroot -proot -e 'USE monteedb_test;TABLE monteedb_test.Utilisateur;'
+
+    -
+      name: Executer les tests coté back end
+
+      run: |
+        cd code/server
+        npm run test
+        npm run test:coverage

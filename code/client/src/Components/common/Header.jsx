@@ -1,72 +1,85 @@
-import { Link } from "react-router-dom/dist";
-import '../../assets/css/header.css'
-import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom/dist";
+import '../../assets/css/header.css';
+import { useContext, useState } from "react";
 import { UserContext } from "../../provider/User_provider";
 
 const Header = () => {
+    const { user, setUser } = useContext(UserContext); // Contexte utilisateur
+    const [menuOpen, setMenuOpen] = useState(false); // État pour gérer l'ouverture du menu
+    const navigate = useNavigate(); // Permet de rediriger l'utilisateur
 
-    
-    const { user, setUser } = useContext(UserContext);
-    // console.log(user);
+    const handleLogout = () => {
+        setUser(null); // Déconnexion
+        setMenuOpen(false); // Fermer le menu
+        navigate('/login'); // Rediriger vers la page de connexion
+    };
 
-    
+    const handleUserIconClick = () => {
+        if (!user) {
+            // Si aucun utilisateur n'est connecté, rediriger vers Login
+            navigate('/login');
+        } else {
+            // Sinon, basculer le menu déroulant
+            setMenuOpen(!menuOpen);
+        }
+    };
+
     return (
         <>
-        <header>
-    <span id="menu-icon">
-        {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-        <i class="ri-menu-2-line"></i>
-    </span>
-    <Link to={'/'} class="logo"><img src="/images/white_logo_montee.svg" alt="Logo" />
-    </Link>
-    
-    
+            <header>
+                <span id="menu-icon">
+                    <i className="ri-menu-2-line"></i>
+                </span>
+                <Link to="/" className="logo">
+                    <img src="/images/white_logo_montee.svg" alt="Logo" />
+                </Link>
 
+                <nav id="navbar">
+                    <ul className="nav-links">
+                        {/* Liens dynamiques pour l'utilisateur/admin */}
+                        {user?.id_role === 1 ? (
+                            <Link to="/admin">Gérer Produits</Link>
+                        ) : (
+                            <>
+                                <Link to="/discover">Découvrir</Link>
+                                <Link to="/create">Créer</Link>
+                                <Link to="/contact">À votre écoute</Link>
+                            </>
+                        )}
+                    </ul>
+                </nav>
 
-    
-    <nav id="navbar">
-        <ul class="nav-links">
-         
-            
-
-            {
-                 user?.id_role === 1 ? (
-                    <Link to= {"/admin"}>Administration</Link>
-                ) : (<></>)
-            }
-            
-            <Link><a href="perso.html">Design Unique</a></Link>
-
-            {
-                // condition react : condition ternaire est la seule condition disponible dans le html de react
-                // condition ? instruction : else 
-                user ? <Link to={ '#'}>Logout</Link> : <> <Link to={'/login'}><a href="produits.html">login</a></Link>
-            <Link to={'/contact'}><a href="contact.html">À votre écoute</a></Link></>
-
-
-            }
-
-           
-           
-            <Link ><a href="contact.html"></a>{user?.nom}</Link>
-            {/* <Link ><p>{JSON.stringify(user)}</p></Link> */}
-            
-        </ul>
-    </nav>
-    <ul class="header-icons">
-        {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-        <li><a href="compte.html"><i class="ri-shopping-bag-2-line"></i></a></li>
-        {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-        <li><a href="panier.html"><i class="ri-user-line"></i></a></li>
-    </ul>
-    <span id="close-icon">
-        {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-        <i class="ri-close-line"></i>
-    </span>
-</header>
+                <ul className="header-icons">
+                    <li>
+                        <a href="compte.html">
+                            <i className="ri-shopping-bag-2-line"></i>
+                        </a>
+                    </li>
+                    <li>
+                        {/* Icône utilisateur avec gestion de connexion/déconnexion */}
+                        <div className="user-menu">
+                            <i
+                                className="ri-user-line"
+                                onClick={handleUserIconClick} // Gérer le clic sur l'icône User
+                                style={{ cursor: "pointer" }}
+                            ></i>
+                            {user && menuOpen && ( // Affiche le menu déroulant si connecté
+                                <div className="dropdown-menu">
+                                    <p>{user?.nom}</p>
+                                    <Link to="#" onClick={handleLogout}>
+                                        Logout
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
+                    </li>
+                </ul>
+                <span id="close-icon">
+                    <i className="ri-close-line"></i>
+                </span>
+            </header>
         </>
-    )
-}
+    );
+};
 
-
-export default Header ;
+export default Header;

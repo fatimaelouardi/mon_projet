@@ -4,7 +4,7 @@ import BaseLayout from "../layout/BaseLayout";
 import ContactPage from "../pages/ContactPage";
 // import Register from "../pages/Register";
 // import Login from "../pages/Login"
-// import LogoutPage from "../pages/LogoutPage";
+import LogoutPage from "../pages/LogoutPage";
 // import ConnexionPage from "../pages/ConnecxionPage";
 import AdminHomePage from "../pages/admin/AdminHomePage";
 import AdminProduitPage from "../pages/admin/AdminProduitPage";
@@ -34,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path: 'login',  
                 element: <Login/>
+            },
+            {
+                path: 'logout',
+                element: <LogoutPage/> 
             },
             {
                 path: '/admin/',
@@ -69,8 +73,4 @@ export default router;
 // {
 //     path: 'login',
 //     element: <Login/>  // Route pour Login (si nécessaire)
-// },
-// {
-//     path: 'logout',
-//     element: <LogoutPage/>  // Logout
 // },

@@ -1,162 +1,107 @@
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-// import { selectAllTaille } from "../../service/taille_api";
 import { createProduit } from "../../service/produit_api";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { authUser } from "../../service/security_api";
 import { UserContext } from "../../provider/User_provider";
+import "../../assets/css/produitForm.css";
 
 const AdminProduitFormPage = () => {
-    const {register, handleSubmit, formState: {errors}, } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const navigate = useNavigate();
+    const { user } = useContext(UserContext);
 
-    // useNvigate permet de changer de route (redirection)
+    const [imagePreview, setImagePreview] = useState(null); // Pour prévisualiser l'image
 
-    const navigate =  useNavigate();
-
-
-      // hna les tailles 
-    // récupérer les tailles  
-
-    // const [tailles, setTaille] = useState([]);
-
-    // useEffect(() => {
-    //     selectAllTaille().then((results) => setTaille(results.data))
-    // }, [])
-    
-
-
-    // soumission du formulaire 
-    // le paramet data permet de récupérer la saisie du foemulaire 
-
-
-    // récu l'utilisateur stocké  dans le contexte
-
-    const {user, setUser} = useContext(UserContext);
-
-
-
-    const submit = async (data) => {
-        console.log(data);
-
-
-        const authentication = await authUser(user);
-        console.log(authentication.data.token);
-
-
-        // créer un produit 
-
-        const results = await createProduit(authentication.data.token , data);
-
-
-
-        
-
-        // enregistrer l'utilisateur 
-        // const results = await registerUser(data);
-
-        // // si l'enregistrement a été effectué 
-
-        // if (results.status === 201) {
-        //     // srocker le messagedans la session 
-
-        //     window.sessionStorage.setItem('notice', 'Registration success');
-
-
-        //     // redirection vers une route 
-        //     navigate("/");
-
-        // }
-        
-        
-        
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => setImagePreview(reader.result); // Charger l'image en base64
+            reader.readAsDataURL(file);
+        }
     };
 
+    const removeImage = () => {
+        setImagePreview(null);
+    };
 
+    const submit = async (data) => {
+        const authentication = await authUser(user);
+        const token = authentication.data.token;
 
-    return <>
-    
-    <main className="container">
-        <h2>Create a new product</h2>
+        const results = await createProduit(token, data);
+        if (results.status === 201) {
+            navigate("/admin/produit");
+        }
+    };
 
-        {/* si le formulaire possède un champ file ajouter l'attribut encType = multipart/form-data */}
+    return (
+        <main className="container">
+            <h2>Create a New Product</h2>
+            <form className="form" onSubmit={handleSubmit(submit)} encType="multipart/form-data">
+                <p>
+                    <label htmlFor="nom">Nom du produit</label>
+                    <input type="text" {...register('nom', { required: "Le nom est obligatoire" })} id="nom" />
+                    {errors.nom && <span>{errors.nom.message}</span>}
+                </p>
 
-        <form  className="form" onSubmit={  handleSubmit(submit)} encType="multipart/form-data">
-        <p>
-                <label htmlFor="nom"  >Nom du produit </label>
-                {/* register remplace l'attribut HTML name  */}
-                <input type="text" {...register('nom')} id="nom" />
-            </p>
-            <p>
-                <label htmlFor="desc"  >description </label>
-                {/* register remplace l'attribut HTML name  */}
-                <input type="text" {...register('description')} id="description" />
-            </p>
+                <p>
+                    <label htmlFor="desc">Description</label>
+                    <textarea {...register('description')} id="desc" />
+                </p>
 
-            <p>
-                <label htmlFor="file">Image</label>
-                <input type="file" {...register('image',{
-                    required:' file is required'
-                })}  id="file"  />
-                <span> { errors?.image?.message }</span>
-            </p>
+                <p>
+                    <label htmlFor="file">Image</label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        {...register('image', { required: 'L\'image est obligatoire' })}
+                        id="file"
+                        onChange={handleImageChange}
+                    />
+                    {imagePreview && (
+                        <div className="image-preview">
+                            <img src={imagePreview} alt="Prévisualisation" />
+                            <button type="button" onClick={removeImage} className="remove-image-btn">
+                                &times;
+                            </button>
+                        </div>
+                    )}
+                    <span>{errors.image?.message}</span>
+                </p>
 
-            <p>
-                <label htmlFor="prix">Prix </label>
-                <input type="number" {...register('prix')}  id="prix" />
-            </p>
-            <p>
+                <p>
+                    <label htmlFor="prix">Prix</label>
+                    <input type="number" {...register('prix', { required: "Le prix est obligatoire" })} id="prix" />
+                    {errors.prix && <span>{errors.prix.message}</span>}
+                </p>
+
+                <p>
                     <label htmlFor="genre">Genre</label>
-                    <select id="genre" {...register('genre', { required: 'Le genre est obligatoire' })}>
+                    <select id="genre" {...register('genre', { required: "Le genre est obligatoire" })}>
                         <option value="" />
                         <option value="homme">Homme</option>
                         <option value="femme">Femme</option>
                     </select>
                     {errors.genre && <span>{errors.genre.message}</span>}
                 </p>
+
+                <p>
+                    <label htmlFor="theme">Thème</label>
+                    <input type="text" id="theme" {...register('theme')} />
+                </p>
+
+                <p>
+                    <button type="submit">Créer un produit</button>
+                </p>
+            </form>
+
             <p>
-                <label htmlFor="theme">theme</label>
-                <input type="text"  id="theme" {...register('theme')} />
+                <Link to={"/admin/produit"}>Back to produit admin</Link>
             </p>
-
-         
-
-            <p>
-                <input type="hidden" value="" {...register("id_produit")} />
-                <button type="submit">Create a product</button>
-            </p>
-            
-        </form>
-
-        <p>
-            <Link to={"/admin/produit"}>
-            Back to produit admin </Link>
-        </p>
-    </main>
-    
-    </>
-
-                
+        </main>
+    );
 };
 
 export default AdminProduitFormPage;
-
-
-
-
-
-
-{/* <p>
-<label htmlFor="taille">Taille</label>
-<select id="taille" {...register('id_taille', { required: 'La taille est obligatoire' })}>
-    <option value="">Sélectionner une taille</option>
-    {tailles.map((taille) => (
-        <option key={taille.id_taille} value={taille.id_taille}>
-            {taille.nom} {/* Afficher le nom de la taille */}
-//         </option>
-//     ))}
-// </select>
-// {errors.id_taille && <span>{errors.id_taille.message}</span>}
-// </p> */}
-
-
-

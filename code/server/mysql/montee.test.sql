@@ -1,6 +1,6 @@
 -- Création de la base de données
-CREATE DATABASE IF NOT EXISTS monteedb;
-USE monteedb;
+CREATE DATABASE IF NOT EXISTS monteedb_test;
+USE monteedb_test;
 
 -- Table Utilisateur
 CREATE TABLE Utilisateur (

@@ -4,8 +4,7 @@
 // import Carousel from "../Components/Connexion/Carousel";
 // import "../assets/css/connexion.css";
 // import { useNavigate } from "react-router-dom";
-// import { loginUser, registerUser } from "../service/security_api"; // Importer les fonctions pour l'API
-
+// import { loginUser, registerUser } from "../service/security_api"; 
 // const ConnexionPage = () => {
 //   const [isSignUpMode, setSignUpMode] = useState(false);
 //   const navigate = useNavigate(); // Pour la redirection
