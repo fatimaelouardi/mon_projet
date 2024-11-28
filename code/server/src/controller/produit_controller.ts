@@ -5,55 +5,53 @@ class ProduitController {
     private produitRepository: ProduitRepository = new ProduitRepository();
 
     // Récupérer tous les produits
-    public index = async (req: Request, res: Response): Promise<Response> => {
+    public index = async (req: Request, res: Response): Promise<void> => {
         const results = await this.produitRepository.selectAll();
-
         if (results instanceof Error) {
-            return process.env.NODE_ENV === "dev"
-                ? res.json(results)
-                : res.status(400).json({
-                      status: 400,
-                      message: "Error",
-                  });
+            res.status(400).json({
+                status: 400,
+                message: "Error",
+            });
+            return;
         }
-
-        return res.status(200).json({
+    
+        res.status(200).json({
             status: 200,
             message: "OK",
             data: results,
         });
     };
+    
 
     // Récupérer un seul produit par son identifiant
-    public one = async (req: Request, res: Response): Promise<Response> => {
-        // Extraire l'ID des paramètres et le convertir en number
+    public one = async (req: Request, res: Response): Promise<void> => {
         const id = Number.parseInt(req.params.id, 10);
     
         if (Number.isNaN(id)) {
-            return res.status(400).json({
+            res.status(400).json({
                 status: 400,
                 message: "Invalid ID parameter",
             });
+            return;
         }
     
-        // Passer l'objet attendu à la méthode `selectOne`
         const results = await this.produitRepository.selectOne({ id });
     
         if (results instanceof Error) {
-            return process.env.NODE_ENV === "dev"
-                ? res.json(results)
-                : res.status(400).json({
-                      status: 400,
-                      message: "Error",
-                  });
+            res.status(400).json({
+                status: 400,
+                message: "Error",
+            });
+            return;
         }
     
-        return res.status(200).json({
+        res.status(200).json({
             status: 200,
             message: "OK",
             data: results,
         });
     };
+    
     
 
     // Créer un nouveau produit

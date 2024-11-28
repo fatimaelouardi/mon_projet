@@ -1,15 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import InputField from "../Connexion/InputField"; // Import du composant pour les champs d'entrée
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../../service/security_api";
 
-const RegisterPage = ({ onToggle, onSubmit }) => {
+const RegisterPage = ({ onFocusHandler, onBlurHandler, onToggle }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
+  const [isActive, setIsActive] = useState(false);
+  const handleFocus = () => {
+    setIsActive(true);
+    if (onFocusHandler) onFocusHandler();
+  };
+
+  const handleBlur = (e) => {
+    setIsActive(e.target.value !== "");
+    if (onBlurHandler) onBlurHandler(e);
+  };
+  
+
+  // useNvigate permet de changer de route (redirection)
+
+  const navigate =  useNavigate();
+
+
+  // soumission du formulaire 
+  // le paramet data permet de récupérer la saisie du foemulaire 
+  const submit = async (data) => {
+      // console.log(data);
+
+      // enregistrer l'utilisateur 
+      const results = await registerUser(data);
+
+      // si l'enregistrement a été effectué 
+
+      if (results.status === 201) {
+          // srocker le messagedans la session 
+
+          window.sessionStorage.setItem('notice', 'Registration success');
+
+
+          // redirection vers une route 
+          navigate("/");
+
+      }
+    }
+
   return (
-    <form className="sign-up-form" onSubmit={handleSubmit(onSubmit)}>
-      <figure className="logo">
-        <img src="images/connexionPage/logo.svg" alt="Logo Montee" />
-      </figure>
+    <form className="sign-up-form" onSubmit={handleSubmit(submit)}>
+      <Link to={'/'} className="logo">
+       <img src="images/connexionPage/logo.svg" alt="Logo Montee" />
+      </Link>
       <section className="heading">
         <h2>Bienvenue!</h2>
         <p>Vous avez déjà un compte ?</p>
@@ -23,39 +63,33 @@ const RegisterPage = ({ onToggle, onSubmit }) => {
         </button>
       </section>
 
-      <InputField
-        type="text"
-        id="nom"
-        label="Nom"
-        ariaLabel="Nom pour inscription"
-        {...register("nom", { required: "Nom est requis" })}
-        error={errors.nom}
-      />
-      <InputField
-        type="email"
-        id="email-register"
-        label="Email"
-        ariaLabel="Email pour inscription"
-        {...register("email", { required: "Email est requis" })}
-        error={errors.email}
-      />
-   
-      <InputField
-        type="password"
-        id="password-register"
-        label="Mot de passe"
-        ariaLabel="Mot de passe pour inscription"
-        {...register("mot_de_passe", { required: "Mot de passe est requis" })}
-        error={errors.mot_de_passe}
-      />
-      <InputField
-        type="number"
-        id="telephone"
-        label="Téléphone"
-        ariaLabel="Téléphone pour inscription"
-        {...register("telephone", { required: "Téléphone est requis" })}
-        error={errors.telephone}
-      />
+      <p className="input-box">
+                <label htmlFor="nom"  >Nom</label>
+                {/* register remplace l'attribut HTML name  */}
+                <input type="text" {...register('nom')} id="nom" onFocus={handleFocus}
+        onBlur={handleBlur}  className={`input-field ${isActive ? "active" : ""}`}/>
+            </p>
+
+            <p className="input-box">
+                <label htmlFor="email">Email</label>
+                <input type="email" {...register('email',{
+                    required:' Email is required'
+                })}  id="email"  onFocus={handleFocus}
+                onBlur={handleBlur}  className={`input-field ${isActive ? "active" : ""}`}/>
+                <span> { errors?.email?.message }</span>
+            </p>
+
+            <p className="input-box">
+                <label htmlFor="password">Mot de passe </label>
+                <input type="password" {...register('mot_de_passe')}  id="password"  onFocus={handleFocus}
+        onBlur={handleBlur}  className={`input-field ${isActive ? "active" : ""}`}/>
+            </p>
+            <p className="input-box">
+                <label htmlFor="telephone">Telephone</label>
+                <input type="number"  id="telephone" {...register('telephone')} onFocus={handleFocus}
+        onBlur={handleBlur}  className={`input-field ${isActive ? "active" : ""}`} />
+            </p>
+
 
       <button type="submit" className="sign-btn">Inscription</button>
     </form>

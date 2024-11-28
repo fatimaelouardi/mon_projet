@@ -1,0 +1,142 @@
+
+.adminProduitMain {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.adminProduitMain h1{
+    margin-top: 5vh;
+    text-align: center;
+    margin-bottom: 10vh;
+    font-size: 2.5rem;
+ 
+}
+
+
+
+.adminProduitMain .addProduct {
+        align-self: flex-end;
+        margin-right: 10vh;
+        margin-bottom: 3vh;
+      
+}
+
+.adminProduitMain .addProduct .link {
+    color: var(--white);
+    background: var(--primary-blue);
+   padding: 14px 38px;
+   border-radius: 32px;
+ 
+}
+
+
+
+
+
+
+
+
+
+table {
+    width: 100%; 
+    border-collapse: collapse; 
+    margin: 20px 0; 
+    font-size: 16px; 
+    text-align: left; 
+}
+
+table th, table td {
+    padding: 12px 15px; 
+    border: 1px solid #ddd;
+    text-align: center; 
+    font-family: sans-serif;
+    vertical-align: middle;
+    height: 100%;
+    font-weight: bold;
+    color: var(--black);
+}
+
+td span {
+    color: var(--black);
+    font-size: 1rem;
+}
+
+
+
+
+
+table th {
+    background-color: var(--l-black); 
+    color: var(--white);
+    font-weight: bold; 
+    height: 7vh;
+}
+
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: rgba(210, 242, 250, 0.38); 
+    transition: .6s  ease-in-out
+}
+
+table img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+
+
+table td {
+    height: 150px; /* Ajustez selon vos besoins */
+}
+
+
+ 
+.button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 190px;
+}
+
+.button .link {
+    font-family: var(--roboto);
+    padding: 12px 24px;
+    border-radius: 32px;
+    width: 10vw;
+}
+
+
+.button .link:first-child {
+    color: var(--primary-blue);
+    background: var(--edit-bg);
+
+}
+
+.button .link:last-child {
+    color: var(--discount-color);
+    background: var(--discount-bg);
+
+    
+}
+
+
+
+.button .link:first-child i{
+    color: var(--primary-blue);
+}
+
+.button .link:last-child i{
+    color: var(--discount-color);
+    
+}
+
+
+

@@ -8,7 +8,8 @@ CREATE TABLE Utilisateur (
     nom VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     mot_de_passe VARCHAR(255) NOT NULL,
-    telephone VARCHAR(15)
+    telephone VARCHAR(15),
+    id_role
 );
 
 -- Table Adresses

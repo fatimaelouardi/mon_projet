@@ -50,7 +50,7 @@ public register = async (req: Request, res: Response): Promise<Response> => {
 
     // Méthode de connexion
   // Méthode de connexion
-public login = async (req: Request, res: Response): Promise<void> => {
+public login = async (req: Request, res: Response): Promise<Response> => {
     const { email, mot_de_passe } = req.body;
 
     if (!email || !mot_de_passe) {
@@ -58,7 +58,7 @@ public login = async (req: Request, res: Response): Promise<void> => {
     }
 
     try {
-        const user = await this.securityRepository.getUserByEmail({ email, mot_de_passe });
+        const user = await this.securityRepository.getUserByEmail({ email });
         if (user instanceof Error) {
             return res.status(404).json({ message: "Utilisateur non trouvé" });
         }
@@ -80,14 +80,14 @@ public login = async (req: Request, res: Response): Promise<void> => {
         (user as User).key = randomKey;
         (user as User).mot_de_passe = encryptedPassword;
 
-        res.status(200).json({
+        return res.status(200).json({
             status: 200,
             message: "Connexion réussie",
             user: user  // Retourne le token JWT
         });
     } catch (error) {
         console.error("Erreur lors de la connexion:", error);
-        res.status(500).json({ message: "Erreur serveur" });
+        return res.status(500).json({ message: "Erreur serveur" });
     }
 };
 
@@ -142,7 +142,7 @@ public auth = async (req: Request, res: Response): Promise<Response> => {
 
         
 
-        res.status(200).json({
+        return res.status(200).json({
             status: 200,
             message: "Authentification réussie",
             data: {

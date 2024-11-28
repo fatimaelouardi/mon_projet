@@ -28,10 +28,10 @@ class ProduitRouter {
         this.router.post("/", this.upload.any(),   new ProduitFileMiddleware().process, new AuthorizationMiddleware().authorize([1]),   new ProduitController().create);
 
         // Mise à jour d'un produit (par un administrateur)
-        this.router.put("/:id", new ProduitController().update);
+        this.router.put("/:id", this.upload.any(), new ProduitFileMiddleware().process,  new AuthorizationMiddleware().authorize([1]), new ProduitController().update);
 
         // Suppression d'un produit (par un administrateur)
-        this.router.delete("/:id", new ProduitController().delete);
+        this.router.delete("/:id", this.upload.any(), new ProduitFileMiddleware().process,  new AuthorizationMiddleware().authorize([1]), new ProduitController().delete);
 
         return this.router;
     };

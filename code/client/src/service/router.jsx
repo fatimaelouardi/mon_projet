@@ -2,15 +2,14 @@ import { createBrowserRouter } from "react-router-dom/dist";
 import HomePage from '../pages/HomePage'
 import BaseLayout from "../layout/BaseLayout";
 import ContactPage from "../pages/ContactPage";
-// import Register from "../pages/Register";
-// import Login from "../pages/Login"
 import LogoutPage from "../pages/LogoutPage";
-// import ConnexionPage from "../pages/ConnecxionPage";
+import ConnexionPage from "../pages/ConnecxionPage";
 import AdminHomePage from "../pages/admin/AdminHomePage";
 import AdminProduitPage from "../pages/admin/AdminProduitPage";
 import AdminProduitFormPage from "../pages/admin/AdminProduitFormPage";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
+import Guard from "../Components/common/Guard";
 
 
 const router = createBrowserRouter([
@@ -31,28 +30,34 @@ const router = createBrowserRouter([
                 path: 'register',  
                 element: <Register/>
             },
-            {
-                path: 'login',  
-                element: <Login/>
-            },
+         
             {
                 path: 'logout',
                 element: <LogoutPage/> 
             },
             {
+                path: 'zena',
+                element: <Login/>  
+            },
+            {
                 path: '/admin/',
+                element: <Guard roles={[1]}>
+                    <BaseLayout/>
+                </Guard>,
                 children: [
                     {
                         path: '',
                         element: <AdminHomePage/>
                     },
                     {
-                        path: 'produit',
+                        path: 'produit/:id?',
                         element: <AdminProduitPage/>
                     },
         
                     {
-                        path: 'produit/form',  
+                        //  créer une variable de route : utiliser :<nom de lla variable > 
+                        //  '?' : variable optionnel 
+                        path: 'produit/form/:id?',  
                         element: <AdminProduitFormPage/>
                     }
                 ]
@@ -60,17 +65,22 @@ const router = createBrowserRouter([
         ]
 
     },
+    {
+        path: 'login',  
+        element: <ConnexionPage/>
+    },
+
+    // {
+    //     path: 'login',
+    //     element: <Login/>  // Route pour Login (si nécessaire)
+    // },
+
+
    
 ])
 
 export default router;
 
 
-// {
-//     path: 'zena',
-//     element: <Register/>  // Route pour Register (si nécessaire)
-// },
-// {
-//     path: 'login',
-//     element: <Login/>  // Route pour Login (si nécessaire)
-// },
+
+

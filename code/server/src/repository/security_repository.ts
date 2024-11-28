@@ -1,9 +1,7 @@
 import type { Pool } from "mysql2/promise"; 
 import MySQLService from "../service/mysql_service.js";
 import type { RowDataPacket, FieldPacket } from "mysql2";
-import RoleRepository from "./role_repository.js";
 import type User from "../models/user_model.js";
-import argon2 from 'argon2';
 
 class SecurityRepository {
     private mySQLService = new MySQLService();
@@ -99,7 +97,7 @@ class SecurityRepository {
    
         } catch (error) {
             console.error("Erreur lors de la récupération de l'utilisateur:", error);
-            return error;
+            return error as Error;
         } finally {
             if (connection) {
                 connection.release();  

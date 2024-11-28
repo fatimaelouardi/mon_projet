@@ -1,23 +1,56 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { createProduit } from "../../service/produit_api";
-import { useContext, useState } from "react";
+import { createProduit, selectOneProduit, updateProduit } from "../../service/produit_api";
+import { useContext, useEffect, useState } from "react";
 import { authUser } from "../../service/security_api";
 import { UserContext } from "../../provider/User_provider";
-import "../../assets/css/produitForm.css";
+import "../../assets/css/admin/produitForm.css";
 
 const AdminProduitFormPage = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, 
+        handleSubmit, 
+        formState: { errors }, 
+        // reset permet de rénitialiser un formulaire avec des données existatntes 
+        reset,
+    } = useForm();
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
 
-    const [imagePreview, setImagePreview] = useState(null); // Pour prévisualiser l'image
+
+    //  srocker le véhicule dont l'identifiant est contenu dans la route 
+
+    const [produit, setProduit] = useState([]);
+
+       // récupérer la variable de route
+       const  {id} = useParams();
+    //    console.log(id);
+
+
+    useEffect(() => {
+        selectOneProduit(id).then((results) => {
+
+            //     stocker les résultats dans un état 
+            setProduit(results.data);
+
+            // réinitialiser le formulaire avec les données existantes 
+
+            reset(results.data);
+        });
+    }, [id, reset])
+    
+    // setProduit(results.data)
+
+
+ 
+    
+
+    const [imagePreview, setImagePreview] = useState(null); 
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = () => setImagePreview(reader.result); // Charger l'image en base64
+            reader.onload = () => setImagePreview(reader.result); 
             reader.readAsDataURL(file);
         }
     };
@@ -28,11 +61,21 @@ const AdminProduitFormPage = () => {
 
     const submit = async (data) => {
         const authentication = await authUser(user);
+
+
         const token = authentication.data.token;
 
-        const results = await createProduit(token, data);
-        if (results.status === 201) {
-            navigate("/admin/produit");
+        const results =  id ? await updateProduit(token, data) 
+        : await  createProduit(token, data);
+
+
+        if ([200, 201].indexOf(results.status) >= 0) {
+
+    // stocker le message dans la session 
+    window.sessionStorage.setItem("notice", id ?  "Produit Updated"  :  "Produit Created");
+    // redirection vers une route
+    navigate("/admin/produit");
+        
         }
     };
 
@@ -40,6 +83,7 @@ const AdminProduitFormPage = () => {
         <main className="container">
             <h2>Create a New Product</h2>
             <form className="form" onSubmit={handleSubmit(submit)} encType="multipart/form-data">
+            
                 <p>
                     <label htmlFor="nom">Nom du produit</label>
                     <input type="text" {...register('nom', { required: "Le nom est obligatoire" })} id="nom" />
@@ -51,25 +95,7 @@ const AdminProduitFormPage = () => {
                     <textarea {...register('description')} id="desc" />
                 </p>
 
-                <p>
-                    <label htmlFor="file">Image</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        {...register('image', { required: 'L\'image est obligatoire' })}
-                        id="file"
-                        onChange={handleImageChange}
-                    />
-                    {imagePreview && (
-                        <div className="image-preview">
-                            <img src={imagePreview} alt="Prévisualisation" />
-                            <button type="button" onClick={removeImage} className="remove-image-btn">
-                                &times;
-                            </button>
-                        </div>
-                    )}
-                    <span>{errors.image?.message}</span>
-                </p>
+               
 
                 <p>
                     <label htmlFor="prix">Prix</label>
@@ -90,6 +116,10 @@ const AdminProduitFormPage = () => {
                 <p>
                     <label htmlFor="theme">Thème</label>
                     <input type="text" id="theme" {...register('theme')} />
+                </p>
+
+                <p>
+                    <input type="hidden" value={ id } {...register('id')} />
                 </p>
 
                 <p>

@@ -14,7 +14,7 @@ const HeroSection = () => {
                 </ul>
             </article>
 
-            <video autoplay loop muted className="hero-video" aria-label="Vidéo promotionnelle de Montee">
+            <video autoPlay loop muted className="hero-video" aria-label="Vidéo promotionnelle de Montee">
                 <source src="public/videos/hero.mp4" type="video/mp4"/>
                 <source src="public/videos/hero.webm" type="video/webm"/>
                 <source src="public/videos/hero.ogg" type="video/ogg"/>
