@@ -56,7 +56,7 @@ describe("produit controller tests suite", async () => {
 		// selection  d'un produit
 		const query = `
     SELECT id_produit
-    FROM ${process.env.MYSQL_DB}.Produit
+    FROM ${process.env.MYSQL_DB}.produit
     ORDER BY id_produit DESC
     LIMIT 1;
 `;

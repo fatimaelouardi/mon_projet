@@ -12,7 +12,7 @@ class ProduitRepository {
 	private mySQLService = new MySQLService();
 
 	// Table utilisée par la classe
-	private table = "Produit";
+	private table = "produit";
 
 	// Sélection de tous les produits
 	public selectAll = async (): Promise<QueryResult | unknown | Produit[]> => {

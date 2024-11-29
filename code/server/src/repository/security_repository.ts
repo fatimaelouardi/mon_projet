@@ -5,7 +5,7 @@ import type User from "../models/user_model.js";
 
 class SecurityRepository {
     private mySQLService = new MySQLService();
-    private table = "Utilisateur";
+    private table = "utilisateur";
 
     // Enregistrer un utilisateur avec un rôle
     public register = async (data: User) => {

@@ -95,6 +95,12 @@ const AdminProduitFormPage = () => {
                     <textarea {...register('description')} id="desc" />
                 </p>
 
+                <p>
+                    <label htmlFor="vg">Nom du produit</label>
+                    <input type="file" {...register('image', { required: "Le nom est obligatoire" })} id="vg" />
+                    {errors.nom && <span>{errors.nom.message}</span>}
+                </p>
+
                
 
                 <p>
