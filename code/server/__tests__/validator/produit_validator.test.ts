@@ -1,31 +1,46 @@
-import Joi, { type ValidationError } from "joi";
+import { describe, expect, it } from "vitest";
+import { ValidationError } from "joi";
+import  ProduitValidator  from "../../src/validator/produit_validator";
 import type Produit from "../../src/models/produit_model";
-class ProduitValidator {
-	// valider les données d'un véhicule
-	public async validate(data: Produit): Promise<unknown | ValidationError> {
-		// contraasync intes de validation
-		// reprendre les propriétés du modèle
-		const constraints = Joi.object({
-			// si l'id est undefined la valeur 0 et utilisée ou une chaine de caractère 
-         
-			id_produit: Joi.number().min(0).allow(""),
-			nom: Joi.string().min(2).max(50).required(),
-			description: Joi.string().min(2).max(50).required(),
-			prix: Joi.string().min(2).max(50).required(),
-			theme: Joi.string().min(2).max(50).required(),
-			genre: Joi.string().min(2).max(50).required(),
-			image: Joi.string().allow(),
-		});
 
-		try {
-            // c'est pour avoir toute les erreur, de base il donne les erreur une par une
-			const validation = await constraints.validateAsync(data, { abortEarly: false });
+//  créer une suite de tests
 
-			return validation;
-		} catch (error) {
-			return error;
-		}
-	}
-}
+describe("image validator tests suite", () => {
+	// créer des fausses données
+	const data: Produit = {
+		id_produit: 1,
+		nom: "t-shirt",
+		description: "description",
+		prix: 100,
+		theme: "casual",
+		genre: "homme",
+		image: "th.jpeg",
+	};
+	// sut: system under test, methode ou la fonction testée
+	const sut: ProduitValidator = new ProduitValidator();
 
-export default ProduitValidator;
+	// creer un test
+	it("should return true", async () => {
+		// comment obtenir la valeur attendue
+		const actual = await sut.validate(data);
+
+		// assertion
+		// chai : accès directement a des méthodes d'insertions
+		// jest: assertion débute par to...
+		expect(actual).toBeTruthy();
+	});
+
+	it("should return an error", async () => {
+		// données renvoyant une erreur
+		const falseData: Produit = {
+			...data,
+			id_produit: 0,
+			nom: "heml",
+		};
+		// comment obtenir la valeur attendue
+		const actual = await sut.validate(falseData);
+
+		// assertion
+		expect(actual).toBeInstanceOf(ValidationError);
+	});
+});

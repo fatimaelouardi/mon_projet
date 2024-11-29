@@ -55,67 +55,73 @@ class ProduitController {
     
 
     // Créer un nouveau produit
-    public create = async (req: Request, res: Response): Promise<Response> => {
+    public create = async (req: Request, res: Response): Promise<void> => {
         const results = await this.produitRepository.create(req.body);
 
         if (results instanceof Error) {
-            return process.env.NODE_ENV === "dev"
+             process.env.NODE_ENV === "dev"
                 ? res.json(results)
                 : res.status(400).json({
                       status: 400,
                       message: "Error",
                   });
+                  return;
         }
 
-        return res.status(201).json({
+         res.status(201).json({
             status: 201,
             message: "Produit Created",
             data: results,
         });
+        return;
     };
 
     // Mettre à jour un produit
-    public update = async (req: Request, res: Response): Promise<Response> => {
+    public update = async (req: Request, res: Response): Promise<void> => {
         const data = { ...req.body, id_produit: req.params.id };
 
         const results = await this.produitRepository.update(data);
 
         if (results instanceof Error) {
-            return process.env.NODE_ENV === "dev"
+             process.env.NODE_ENV === "dev"
                 ? res.json(results)
                 : res.status(400).json({
                       status: 400,
                       message: "Error",
                   });
+                  return;
         }
 
-        return res.status(200).json({
+         res.status(200).json({
             status: 200,
             message: "Produit Updated",
             data: results,
         });
+        return;
     };
 
     // Supprimer un produit
-    public delete = async (req: Request, res: Response): Promise<Response> => {
+    public delete = async (req: Request, res: Response): Promise<void> => {
         const results = await this.produitRepository.delete({
             id_produit: req.params.id as unknown as number,
         });
 
         if (results instanceof Error) {
-            return process.env.NODE_ENV === "dev"
+             process.env.NODE_ENV === "dev"
                 ? res.json(results)
                 : res.status(400).json({
                       status: 400,
                       message: "Error",
                   });
+                  return;
         }
 
-        return res.status(200).json({
+         res.status(200).json({
             status: 200,
             message: "Produit Deleted",
             data: results,
         });
+        return;
     };
 }
 

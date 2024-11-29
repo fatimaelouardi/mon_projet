@@ -15,12 +15,13 @@ class SecurityController {
 
     // Méthode pour enregistrer un utilisateur
 
-public register = async (req: Request, res: Response): Promise<Response> => {
+public register = async (req: Request, res: Response): Promise<void> => {
     const { email, mot_de_passe, nom, telephone } = req.body;
 
     // Vérification des champs requis
     if (!email || !mot_de_passe || !nom || !telephone) {
-        return res.status(400).json({ message: "Tous les champs sont requis" });
+         res.status(400).json({ message: "Tous les champs sont requis" });
+         return;
         
     }
 
@@ -36,11 +37,13 @@ public register = async (req: Request, res: Response): Promise<Response> => {
             telephone
         });
 
-        return res.status(201).json({ status: 201, message: "Utilisateur créé avec succès" });
+         res.status(201).json({ status: 201, message: "Utilisateur créé avec succès" });
+         return;
         
     } catch (error) {
         console.error("Erreur lors de l'enregistrement:", error);
-        return res.status(500).json({ message: "Erreur serveur" });
+         res.status(500).json({ message: "Erreur serveur" });
+         return;
       
     }
 };
@@ -50,17 +53,19 @@ public register = async (req: Request, res: Response): Promise<Response> => {
 
     // Méthode de connexion
   // Méthode de connexion
-public login = async (req: Request, res: Response): Promise<Response> => {
+public login = async (req: Request, res: Response): Promise<void> => {
     const { email, mot_de_passe } = req.body;
 
     if (!email || !mot_de_passe) {
-        return res.status(400).json({ message: "Email et mot de passe sont requis" });
+         res.status(400).json({ message: "Email et mot de passe sont requis" });
+         return;
     }
 
     try {
-        const user = await this.securityRepository.getUserByEmail({ email });
+        const user = await this.securityRepository.getUserByEmail({ email, mot_de_passe });
         if (user instanceof Error) {
-            return res.status(404).json({ message: "Utilisateur non trouvé" });
+             res.status(404).json({ message: "Utilisateur non trouvé" });
+            return;
         }
 
         // Générer un token JWT
@@ -80,14 +85,16 @@ public login = async (req: Request, res: Response): Promise<Response> => {
         (user as User).key = randomKey;
         (user as User).mot_de_passe = encryptedPassword;
 
-        return res.status(200).json({
+         res.status(200).json({
             status: 200,
             message: "Connexion réussie",
             user: user  // Retourne le token JWT
         });
+        return;
     } catch (error) {
         console.error("Erreur lors de la connexion:", error);
-        return res.status(500).json({ message: "Erreur serveur" });
+         res.status(500).json({ message: "Erreur serveur" });
+         return;
     }
 };
 
@@ -95,7 +102,7 @@ public login = async (req: Request, res: Response): Promise<Response> => {
 
 
     // Méthode d'authentification
-public auth = async (req: Request, res: Response): Promise<Response> => {
+public auth = async (req: Request, res: Response): Promise<void> => {
     // const { email, mot_de_passe, key } = req.body;
 
     // if (!email || !mot_de_passe || !key) {
@@ -109,7 +116,8 @@ public auth = async (req: Request, res: Response): Promise<Response> => {
         
         const user = await this.securityRepository.getUserByEmail(req.body);
         if (user instanceof Error) {
-            return res.status(404).json({ status: 404, message: "Utilisateur non trouvé" });
+             res.status(404).json({ status: 404, message: "Utilisateur non trouvé" });
+             return;
         }
 
         // écryptage du mot de passe
@@ -125,7 +133,8 @@ public auth = async (req: Request, res: Response): Promise<Response> => {
         // vérifier si le mot de passe décrypté correspond au mot de passe haché
         const isPasswordValid = await argon2.verify((user as User).mot_de_passe as string, decryptedPassword as string);
         if (!isPasswordValid) {
-            return res.status(401).json({ message: "Mot de passe incorrect" });
+             res.status(401).json({ message: "Mot de passe incorrect" });
+             return;
         }
 
         // générer un token JWT
@@ -142,13 +151,14 @@ public auth = async (req: Request, res: Response): Promise<Response> => {
 
         
 
-        return res.status(200).json({
+         res.status(200).json({
             status: 200,
             message: "Authentification réussie",
             data: {
                 token: token,
             }
         });
+        return;
     // } catch (error) {
     //     console.error("Erreur lors de l'authentification:", error);
     //     res.status(500).json({ message: "Erreur serveur" });

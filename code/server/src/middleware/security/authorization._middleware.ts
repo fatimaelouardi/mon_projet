@@ -3,7 +3,7 @@ import jwt, { type JwtPayload } from "jsonwebtoken";
 
 class AuthorizationMiddleware {
     // methode resevant la liste des roles autorisés
-	public authorize = (roles: string[]) => {
+	public authorize = (roles: number[]) => {
         // console.log(roles);
         
         // retourner un middleware
@@ -21,20 +21,22 @@ class AuthorizationMiddleware {
                     status: 401,
                     message: "Unauthorized",
                 });
+                return;
             }
     
             // recuperer le payload du token
-            const data: JWT = jwt.decode(token) as JwtPayload;
+            const data: JwtPayload = jwt.decode(token) as JwtPayload;
     
     
             // verification des autorisation
             // if (data.user.role.name !== "admin"){
             // chercher le role de l'utilisateur dans la liste des roles utiliser
             if (roles.indexOf(data.user.id_role) === -1){
-                return res.status(401).json({
+                 res.status(401).json({
                     status: 401,
                     message: "Unauthorized"
                 });
+                return;
             }
             // passer au middleware suivant
             next();

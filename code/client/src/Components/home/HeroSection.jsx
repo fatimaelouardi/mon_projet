@@ -15,9 +15,9 @@ const HeroSection = () => {
             </article>
 
             <video autoPlay loop muted className="hero-video" aria-label="Vidéo promotionnelle de Montee">
-                <source src="public/videos/hero.mp4" type="video/mp4"/>
-                <source src="public/videos/hero.webm" type="video/webm"/>
-                <source src="public/videos/hero.ogg" type="video/ogg"/>
+                <source src="/videos/hero.mp4" type="video/mp4"/>
+                <source src="/videos/hero.webm" type="video/webm"/>
+                <source src="/videos/hero.ogg" type="video/ogg"/>
                 Votre navigateur ne prend pas en charge la balise vidéo.
             </video>
         </section>

@@ -1,124 +1,132 @@
-import type { Request, Response } from "express";
-import ProduitRepository from "../repository/produit_repository.js";
+import { describe, expect, it } from "vitest";
+import supertest, { type Response } from "supertest";
+import Server from "../../src/core/server";
+import Jwt from "jsonwebtoken";
+import MySQLService from "../../src/service/mysql_service";
+import type Role from "../../src/models/role_model";
+import type User from "../../src/models/user_model";
+import type Produit from "../../src/models/produit_model";
 
-class ProduitController {
-    private produitRepository: ProduitRepository = new ProduitRepository();
+describe("produit controller tests suite", async () => {
+	// route principale appelée par les tests
+	const route = "/produit";
 
-    // Récupérer tous les produits
-    public index = async (req: Request, res: Response): Promise<Response> => {
-        const results = await this.produitRepository.selectAll();
+	// user admin
+	const role: Role = {
+		id_role: 1,
+		name: "Admin",
+	};
+	const admin: User = {
+		id_utilisateur: 1,
+		email: "email@email.fr",
+		mot_de_passe: "password",
+		nom: "zena",
+		telephone: "0101010101",
+		id_role: 1,
+		role: role,
+	};
+	// création d'un produit
+	const data: Produit = {
+		id_produit: 1,
+		nom: "t-shirt",
+		description: "description",
+		prix: 100,
+		theme: "casual",
+		genre: "homme",
+		image: "th.jpeg",
+	};
 
-        if (results instanceof Error) {
-            return process.env.NODE_ENV === "dev"
-                ? res.json(results)
-                : res.status(400).json({
-                      status: 400,
-                      message: "Error",
-                  });
-        }
+	// génerer un jwt
+	const token = Jwt.sign(
+		{
+			user: admin,
+		},
+		process.env.JWT_SECRET as string,
+		{
+			expiresIn: 30,
+		},
+	);
 
-        return res.status(200).json({
-            status: 200,
-            message: "OK",
-            data: results,
-        });
-    };
+	const getLastId = async () => {
+		// acceder au service my sql
+		const mySQLService = new MySQLService();
+		const connection = await mySQLService.connect();
+		const transaction = await connection.getConnection();
+		await transaction.beginTransaction();
+		// selection  d'un produit
+		const query = `
+    SELECT id_produit
+    FROM ${process.env.MYSQL_DB}.Produit
+    ORDER BY id_produit DESC
+    LIMIT 1;
+`;
+		const results: Produit[] | unknown = await connection.execute(query, data);
+		const fullresults: Produit | unknown = (
+			(results as Produit[]).shift() as []
+		).shift();
 
-    // Récupérer un seul produit par son identifiant
-    public one = async (req: Request, res: Response): Promise<Response> => {
-        // Extraire l'ID des paramètres et le convertir en number
-        const id = Number.parseInt(req.params.id, 10);
-    
-        if (Number.isNaN(id)) {
-            return res.status(400).json({
-                status: 400,
-                message: "Invalid ID parameter",
-            });
-        }
-    
-        // Passer l'objet attendu à la méthode `selectOne`
-        const results = await this.produitRepository.selectOne({ id });
-    
-        if (results instanceof Error) {
-            return process.env.NODE_ENV === "dev"
-                ? res.json(results)
-                : res.status(400).json({
-                      status: 400,
-                      message: "Error",
-                  });
-        }
-    
-        return res.status(200).json({
-            status: 200,
-            message: "OK",
-            data: results,
-        });
-    };
-    
+		return fullresults;
+	};
 
-    // Créer un nouveau produit
-    public create = async (req: Request, res: Response): Promise<Response> => {
-        const results = await this.produitRepository.create(req.body);
+	it("should return a status code 200 with all entries", async () => {
+		const expected = 200;
 
-        if (results instanceof Error) {
-            return process.env.NODE_ENV === "dev"
-                ? res.json(results)
-                : res.status(400).json({
-                      status: 400,
-                      message: "Error",
-                  });
-        }
+		// sut (syteme under test)
+		const sut = await supertest(new Server().createServer()).get(route);
+		const actual = sut.status;
+		// assertion
+		expect(actual).toBe(expected);
+	});
 
-        return res.status(201).json({
-            status: 201,
-            message: "Produit Created",
-            data: results,
-        });
-    };
+	it("should return a status code 200 with one entry", async () => {
+		const expected = 200;
 
-    // Mettre à jour un produit
-    public update = async (req: Request, res: Response): Promise<Response> => {
-        const data = { ...req.body, id_produit: req.params.id };
+		// sut (syteme under test)
+		const sut: Response = await supertest(new Server().createServer()).get(`${route}/1`);
+		const actual = sut.status;
+		// assertion
+		expect(actual).toBe(expected);
+	});
 
-        const results = await this.produitRepository.update(data);
+	it("should return a status code 201 with create entry", async () => {
+		const expected = 201;
 
-        if (results instanceof Error) {
-            return process.env.NODE_ENV === "dev"
-                ? res.json(results)
-                : res.status(400).json({
-                      status: 400,
-                      message: "Error",
-                  });
-        }
+		// sut (syteme under test)
+		const sut = await supertest(new Server().createServer())
+			.post(route)
+			.auth(token, { type: "bearer" })
+			.send(data);
+		const actual = sut.status;
+		// assertion
+		expect(actual).toBe(expected);
+	});
 
-        return res.status(200).json({
-            status: 200,
-            message: "Produit Updated",
-            data: results,
-        });
-    };
+	it("should return a status code 200 with one entry update", async () => {
+		const expected = 200;
 
-    // Supprimer un produit
-    public delete = async (req: Request, res: Response): Promise<Response> => {
-        const results = await this.produitRepository.delete({
-            id_produit: req.params.id as unknown as number,
-        });
+		const lastId = await getLastId();
 
-        if (results instanceof Error) {
-            return process.env.NODE_ENV === "dev"
-                ? res.json(results)
-                : res.status(400).json({
-                      status: 400,
-                      message: "Error",
-                  });
-        }
+		// sut (syteme under test)
+		const sut = await supertest(new Server().createServer())
+			.put(`${route}/${(lastId as Produit).id_produit}`)
+			.auth(token, { type: "bearer" })
+			.send(data);
 
-        return res.status(200).json({
-            status: 200,
-            message: "Produit Deleted",
-            data: results,
-        });
-    };
-}
+		const actual = sut.status;
+		// assertion
+		expect(actual).toBe(expected);
+	});
 
-export default ProduitController;
+	it("should return a status code 200 with one entry delete", async () => {
+		const expected = 200;
+		const lastId = await getLastId();
+
+		const sut = await supertest(new Server().createServer())
+			.delete(`${route}/${(lastId as Produit).id_produit}`)
+			.auth(token, { type: "bearer" });
+
+		const actual = sut.status;
+		// assertion
+		expect(actual).toBe(expected);
+	});
+});

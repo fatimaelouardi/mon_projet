@@ -10,6 +10,7 @@ import AdminProduitFormPage from "../pages/admin/AdminProduitFormPage";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import Guard from "../Components/common/Guard";
+import ProductDetailPage from "../pages/ProduceDetailPage";
 
 
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: 'zena',
                 element: <Login/>  
+            },
+            {
+                path: 'produit/:id',
+                element: <ProductDetailPage/> 
             },
             {
                 path: '/admin/',
